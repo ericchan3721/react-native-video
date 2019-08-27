@@ -342,7 +342,6 @@ public class ReactVideoView extends ScalableVideoView implements
 
         src.putString(ReactVideoViewManager.PROP_SRC_URI, uriString);
         src.putString(ReactVideoViewManager.PROP_SRC_TYPE, type);
-        src.putMap(ReactVideoViewManager.PROP_SRC_HEADERS, wRequestHeaders);
         src.putBoolean(ReactVideoViewManager.PROP_SRC_IS_NETWORK, isNetwork);
         if(mMainVer>0) {
             src.putInt(ReactVideoViewManager.PROP_SRC_MAINVER, mMainVer);
