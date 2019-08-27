@@ -116,7 +116,6 @@ public class ReactVideoView extends ScalableVideoView implements
 
     private String mSrcUriString = null;
     private String mSrcType = "mp4";
-    private ReadableMap mRequestHeaders = null;
     private boolean mSrcIsNetwork = false;
     private boolean mSrcIsAsset = false;
     private ScalableType mResizeMode = ScalableType.LEFT_TOP;
@@ -250,17 +249,16 @@ public class ReactVideoView extends ScalableVideoView implements
         }
     }
 
-    public void setSrc(final String uriString, final String type, final boolean isNetwork, final boolean isAsset, final ReadableMap requestHeaders) {
-        setSrc(uriString, type, isNetwork, isAsset, requestHeaders, 0, 0);
+    public void setSrc(final String uriString, final String type, final boolean isNetwork, final boolean isAsset) {
+        setSrc(uriString, type, isNetwork, isAsset, 0, 0);
     }
 
-    public void setSrc(final String uriString, final String type, final boolean isNetwork, final boolean isAsset, final ReadableMap requestHeaders, final int expansionMainVersion, final int expansionPatchVersion) {
+    public void setSrc(final String uriString, final String type, final boolean isNetwork, final boolean isAsset, final int expansionMainVersion, final int expansionPatchVersion) {
 
         mSrcUriString = uriString;
         mSrcType = type;
         mSrcIsNetwork = isNetwork;
         mSrcIsAsset = isAsset;
-        mRequestHeaders = requestHeaders;
         mMainVer = expansionMainVersion;
         mPatchVer = expansionPatchVersion;
 
@@ -287,10 +285,6 @@ public class ReactVideoView extends ScalableVideoView implements
 
                 if (cookie != null) {
                     headers.put("Cookie", cookie);
-                }
-
-                if (mRequestHeaders != null) {
-                    headers.putAll(toStringMap(mRequestHeaders));
                 }
 
                 /* According to https://github.com/react-native-community/react-native-video/pull/537
@@ -345,7 +339,6 @@ public class ReactVideoView extends ScalableVideoView implements
         WritableMap src = Arguments.createMap();
 
         WritableMap wRequestHeaders = Arguments.createMap();
-        wRequestHeaders.merge(mRequestHeaders);
 
         src.putString(ReactVideoViewManager.PROP_SRC_URI, uriString);
         src.putString(ReactVideoViewManager.PROP_SRC_TYPE, type);
@@ -707,10 +700,10 @@ public class ReactVideoView extends ScalableVideoView implements
         super.onAttachedToWindow();
 
         if(mMainVer>0) {
-            setSrc(mSrcUriString, mSrcType, mSrcIsNetwork, mSrcIsAsset, mRequestHeaders, mMainVer, mPatchVer);
+            setSrc(mSrcUriString, mSrcType, mSrcIsNetwork, mSrcIsAsset, mMainVer, mPatchVer);
         }
         else {
-            setSrc(mSrcUriString, mSrcType, mSrcIsNetwork, mSrcIsAsset, mRequestHeaders);
+            setSrc(mSrcUriString, mSrcType, mSrcIsNetwork, mSrcIsAsset);
         }
         setKeepScreenOn(true);
     }
